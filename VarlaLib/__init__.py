@@ -1,5 +1,5 @@
-from .main import *
-from .functions.Verbosity import *
-from .functions.essantials import *
+from .Essantials.VarlaCLI import *
+
+from .Utility.Verbosity import *
 
 clear()

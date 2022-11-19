@@ -1,6 +1,8 @@
 import enum
-from utility.Context import context
-from VarlaLib.functions.essantials import say
+from typing import Literal
+from VarlaLib.Context import context
+from VarlaLib import say
+
 
 class Verbosity(enum.Enum):
     QUITE = 0
@@ -8,7 +10,7 @@ class Verbosity(enum.Enum):
     VERBOSE = 2
     ALWAYS = 3
 
-    def __str__(self):
+    def __str__(self) -> Literal['normal', 'quite', 'verbose'] | None:
         if self == Verbosity.NORMAL:
             return "normal"
         if self == Verbosity.QUITE:
@@ -16,10 +18,12 @@ class Verbosity(enum.Enum):
         if self == Verbosity.VERBOSE:
             return "verbose"
 
-def say_conditional(message:str):
-        print(message)
 
-def set_verbosity(status:Verbosity):
+def say_conditional(message: str) -> None:
+    print(message)
+
+
+def set_verbosity(status: Verbosity) -> None:
     if status == Verbosity.QUITE:
         say(f"Shhh! setting verbosity to {status}")
     elif status == Verbosity.VERBOSE:
@@ -28,5 +32,6 @@ def set_verbosity(status:Verbosity):
         say(f"Back to normal! setting verbosity to {status}")
 
     context.flags["verbosity"] = status
-    
-    
+
+
+context.flags["verbosity"] = Verbosity.NORMAL
