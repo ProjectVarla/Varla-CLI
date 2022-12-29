@@ -26,7 +26,7 @@ def list_tasks(
     ctx: typer.Context,
     show_archived: bool = typer.Option(False, "--show-archived", "-a"),
     show_all: bool = typer.Option(False, "--show-all", "-A"),
-    long_listing: bool = typer.Option(False, "--long-listing", "-l")
+    long_listing: bool = typer.Option(False, "--long-listing", "-l"),
 ):
 
     if long_listing:
@@ -51,16 +51,10 @@ def create_task(
     title: str,
     description: str = typer.Option("", "--description", "-d"),
     color: str = typer.Option("", "--color", "-c"),
-    archived: bool = typer.Option(False, "--archived", "-a")
-
+    archived: bool = typer.Option(False, "--archived", "-a"),
 ):
     TM.create_task(
-        Task.Base(
-            title=title,
-            description=description,
-            color=color,
-            archived=archived
-        )
+        Task.Base(title=title, description=description, color=color, archived=archived)
     )
 
 
@@ -69,16 +63,11 @@ def create_todo(
     task_id: int,
     text: str,
     archived: bool = typer.Option(False, "--archived", "-a"),
-    pinned: bool = typer.Option(False, "--pinned", "-p")
+    pinned: bool = typer.Option(False, "--pinned", "-p"),
 ):
     TM.create_todo(
         task_id=task_id,
-        todo=Todo.Base(
-            text=text,
-            archived=archived,
-            pinned=pinned,
-            checked=False
-        )
+        todo=Todo.Base(text=text, archived=archived, pinned=pinned, checked=False),
     )
 
 
@@ -88,19 +77,14 @@ def modify_task(
     title: str = typer.Option(None, "--title", "-t"),
     description: str = typer.Option(None, "--description", "-d"),
     color: str = typer.Option(None, "--color", "-c"),
-    archived: Optional[bool] = typer.Option(
-        None, "--archive/--un-archive", "-a/-una"),
-
+    archived: Optional[bool] = typer.Option(None, "--archive/--un-archive", "-a/-una"),
 ):
     print(task_id, title, description, color, archived)
     TM.modify_task(
         task_id=task_id,
         task=Task.Edit(
-            title=title,
-            description=description,
-            color=color,
-            archived=archived
-        )
+            title=title, description=description, color=color, archived=archived
+        ),
     )
 
 
@@ -109,25 +93,17 @@ def modify_todo(
     todo_id: int,
     text: str = typer.Option(None, "--text", "-t"),
     archived: bool = typer.Option(None, "--archived", "-a"),
-    pinned: bool = typer.Option(None, "--pinned", "-p")
+    pinned: bool = typer.Option(None, "--pinned", "-p"),
 ):
     TM.modify_todo(
         todo_id=todo_id,
-        todo=Todo.Edit(
-            text=text,
-            archived=archived,
-            pinned=pinned,
-            checked=False
-        )
+        todo=Todo.Edit(text=text, archived=archived, pinned=pinned, checked=False),
     )
 
 
 @delete.command("task")
 def delete_task(id: int):
-    typer.confirm(
-        f"Are you sure you want to delete task with id = {id}?",
-        abort=True
-    )
+    typer.confirm(f"Are you sure you want to delete task with id = {id}?", abort=True)
 
     TM.delete_task(id)
 
@@ -136,10 +112,7 @@ def delete_task(id: int):
 
 @delete.command("todo")
 def delete_todo(id: int):
-    typer.confirm(
-        f"Are you sure you want to delete todo with id = {id}?",
-        abort=True
-    )
+    typer.confirm(f"Are you sure you want to delete todo with id = {id}?", abort=True)
 
     TM.delete_todo(id)
 
