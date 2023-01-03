@@ -1,7 +1,4 @@
-from os import getenv
-
 import requests
-from dotenv import load_dotenv
 from fastapi import status
 from requests import ConnectionError, ReadTimeout
 
@@ -10,10 +7,7 @@ from Models.Exceptions import ServiceUnavailable
 from VarlaLib import VarlaCLI as Varla
 from VarlaLib.Shell.List.List_Control import Control
 from VarlaLib.Shell.List.main import Schema, Table, render
-
-load_dotenv()
-
-HOST = getenv("TASKS_SERVICE_URL")
+from conf import settings
 
 
 class TasksManager:
@@ -24,8 +18,9 @@ class TasksManager:
     @staticmethod
     def delete_task(task_id: int):
         response = requests.delete(
-            f"{HOST}/api/tasks/delete/task/{task_id}", timeout=3)
-        if (response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE):
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/delete/task/{task_id}", timeout=3
+        )
+        if response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
             raise ServiceUnavailable()
 
         return response.json()
@@ -33,8 +28,9 @@ class TasksManager:
     @staticmethod
     def delete_todo(todo_id: int):
         response = requests.delete(
-            f"{HOST}/api/tasks/delete/todo/{todo_id}", timeout=3)
-        if (response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE):
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/delete/todo/{todo_id}", timeout=3
+        )
+        if response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
             raise ServiceUnavailable()
 
         return response.json()
@@ -42,8 +38,11 @@ class TasksManager:
     @staticmethod
     def create_task(task: Task.Base):
         response = requests.post(
-            f"{HOST}/api/tasks/insert/task/", json=task.dict(), timeout=3)
-        if (response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE):
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/insert/task/",
+            json=task.dict(),
+            timeout=3,
+        )
+        if response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
             raise ServiceUnavailable()
 
         return response.json()
@@ -51,8 +50,11 @@ class TasksManager:
     @staticmethod
     def create_todo(task_id: int, todo: Todo.Base):
         response = requests.post(
-            f"{HOST}/api/tasks/insert/todo/{task_id}", json=todo.dict(), timeout=3)
-        if (response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE):
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/insert/todo/{task_id}",
+            json=todo.dict(),
+            timeout=3,
+        )
+        if response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
             raise ServiceUnavailable()
 
         return response.json()
@@ -60,8 +62,11 @@ class TasksManager:
     @staticmethod
     def modify_task(task_id: int, task: Task.Edit):
         response = requests.put(
-            f"{HOST}/api/tasks/update/task/{task_id}", json=task.dict(), timeout=3)
-        if (response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE):
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/update/task/{task_id}",
+            json=task.dict(),
+            timeout=3,
+        )
+        if response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
             raise ServiceUnavailable()
 
         return response.json()
@@ -69,8 +74,11 @@ class TasksManager:
     @staticmethod
     def modify_todo(todo_id: int, todo: Todo.Edit):
         response = requests.put(
-            f"{HOST}/api/tasks/update/todo/{todo_id}", json=todo.dict(), timeout=3)
-        if (response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE):
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/update/todo/{todo_id}",
+            json=todo.dict(),
+            timeout=3,
+        )
+        if response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
             raise ServiceUnavailable()
 
         return response.json()
@@ -78,8 +86,11 @@ class TasksManager:
     @staticmethod
     def get_tasks(filter: Task.Filter):
         response = requests.post(
-            f"{HOST}/api/tasks/get/tasks", data=filter.json(), timeout=3)
-        if (response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE):
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/get/tasks",
+            data=filter.json(),
+            timeout=3,
+        )
+        if response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE:
             raise ServiceUnavailable()
 
         return response.json()
@@ -87,7 +98,10 @@ class TasksManager:
     @staticmethod
     def get_todos(filter: Todo.Filter):
         response = requests.post(
-            f"{HOST}/api/tasks/get/todos", data=filter.json(), timeout=3)
+            f"{settings.TASKS_SERVICE_URL}/api/tasks/get/todos",
+            data=filter.json(),
+            timeout=3,
+        )
         return response.json()
 
     @staticmethod
@@ -96,7 +110,7 @@ class TasksManager:
 
     @staticmethod
     def list_tasks(
-            filter: Task.Filter = Task.Filter(),
+        filter: Task.Filter = Task.Filter(),
     ):
 
         filter.is_archived = TasksManager.filterType == FilterType.ARCHIVED
@@ -108,7 +122,7 @@ class TasksManager:
             columns = [
                 Schema(0, "id", "ID"),
                 Schema(1, "title", "Title"),
-                Schema(2, "description", "Description")
+                Schema(2, "description", "Description"),
             ]
 
         TasksManager.list_test(
@@ -116,15 +130,10 @@ class TasksManager:
             columns=columns,
             on_enter=lambda cursor: (
                 TasksManager.list_todos(
-                    Todo.Filter(
-                        task_id=TasksManager.get_id_from_cursor(
-                            tasks, cursor
-                        )))
+                    Todo.Filter(task_id=TasksManager.get_id_from_cursor(tasks, cursor))
+                )
             ),
-            on_render=lambda cursor: render(
-                Table(tasks, columns),
-                cursor.x, cursor.y
-            )
+            on_render=lambda cursor: render(Table(tasks, columns), cursor.x, cursor.y),
         )
 
     @staticmethod
@@ -141,21 +150,22 @@ class TasksManager:
             columns = [
                 Schema(0, "id", "ID"),
                 Schema(1, "text", "Text"),
-                Schema(2, "checked", "checked")
+                Schema(2, "checked", "checked"),
             ]
 
         TasksManager.list_test(
             items=todos,
             columns=columns,
             on_enter=lambda count: print(count),
-            on_render=lambda cursor: render(
-                Table(todos, columns), cursor.x, cursor.y
-            )
+            on_render=lambda cursor: render(Table(todos, columns), cursor.x, cursor.y),
         )
 
     @staticmethod
     def list_test(
-            items, columns, on_enter, on_render,
+        items,
+        columns,
+        on_enter,
+        on_render,
     ):
         try:
 
@@ -164,7 +174,7 @@ class TasksManager:
             control = Control(
                 dimension=table.dimension,
                 on_enter=lambda count: on_enter(count),
-                on_render=lambda cursor: on_render(cursor)
+                on_render=lambda cursor: on_render(cursor),
             )
 
             control.print()
@@ -193,7 +203,7 @@ class TasksManager:
         control = Control(
             dimension=table.dimension,
             on_enter=lambda count: on_enter(count),
-            on_render=lambda cursor: on_render(cursor)
+            on_render=lambda cursor: on_render(cursor),
         )
 
         control.print()
