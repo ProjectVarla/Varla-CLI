@@ -33,5 +33,4 @@ def default(ctx: TyperContext) -> None:
 
 
 if __name__ == "__main__":
-    header()
     app()
