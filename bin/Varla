@@ -1,0 +1,37 @@
+#!/bin/python3
+
+
+from CommandCenter.Registry import CommandCenter
+from Interfaces.Cores import notification
+from Interfaces.Infrasturctures import orchestrator
+from Interfaces.Services import backup, tasks
+from typer import Context as TyperContext
+from typer import Typer
+from VarlaLib.Context import context
+from VarlaLib.Shell import VarlaCLI as Varla, header
+
+app = Typer(add_completion=True)
+
+app.add_typer(tasks, name="tasks")
+app.add_typer(backup, name="backup")
+app.add_typer(notification, name="notification")
+app.add_typer(orchestrator, name="orchestrator")
+
+
+@app.command("shell", help="[Optional] Shows varla in an interactive way.")
+@app.callback(invoke_without_command=True)
+def default(ctx: TyperContext) -> None:
+    """Sub-command that I would like to be the default."""
+
+    context.ctx_command = ctx.command
+    context.command_center_registry = CommandCenter.commands()
+    context.get_command = CommandCenter.get_command
+    if ctx.invoked_subcommand is not None and ctx.invoked_subcommand != "shell":
+        return
+
+    Varla.standby()
+
+
+if __name__ == "__main__":
+    header()
+    app()
