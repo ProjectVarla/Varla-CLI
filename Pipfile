@@ -7,8 +7,16 @@ name = "pypi"
 requests = "*"
 python-dotenv = "*"
 pynput = "*"
+pydantic = "*"
+typer = {extras = ["all"], version = "*"}
+fastapi = "*"
+tabulate = "*"
+keyboard = "*"
+treelib = "*"
 
 [dev-packages]
+black = "*"
+autoflake = "*"
 
 [requires]
 python_version = "3.10"
