@@ -1,13 +1,12 @@
 import requests
+from conf import settings
 from fastapi import status
-from requests import ConnectionError, ReadTimeout
-
 from Models import FilterType, ListRenderType, Pair, Task, Todo
 from Models.Exceptions import ServiceUnavailable
-from VarlaLib import VarlaCLI as Varla
-from VarlaLib.Shell.List.List_Control import Control
-from VarlaLib.Shell.List.main import Schema, Table, render
-from conf import settings
+from requests import ConnectionError, ReadTimeout
+from VarlaLib.Shell import Control, Schema, Table
+from VarlaLib.Shell import VarlaCLI as Varla
+from VarlaLib.Shell import render
 
 
 class TasksManager:
