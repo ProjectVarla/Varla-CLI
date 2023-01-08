@@ -12,6 +12,12 @@ def trigger_backup_all(
     )
 ):
     if title == "ALL":
-        print(BackupServiceClient.trigger_all_backup())
+        print(BackupServiceClient.trigger_all_backups())
     else:
         print(BackupServiceClient.trigger_backup(title))
+
+
+@backup.command("list")
+def trigger_backup_all():
+    for i in BackupServiceClient.list_backups()["message"]:
+        print(i)

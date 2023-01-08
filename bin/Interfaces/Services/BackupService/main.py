@@ -13,9 +13,17 @@ class BackupServiceClient:
         return response.json()
 
     @staticmethod
-    def trigger_all_backup():
+    def trigger_all_backups():
         response = requests.post(
             f"{settings.BACKUP_SERVICE_URL}/FileManager/backup/trigger_all", timeout=3
+        )
+
+        return response.json()
+
+    @staticmethod
+    def list_backups():
+        response = requests.post(
+            f"{settings.BACKUP_SERVICE_URL}/FileManager/backup/list", timeout=3
         )
 
         return response.json()
