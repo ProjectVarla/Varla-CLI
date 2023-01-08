@@ -1,0 +1,58 @@
+╭────┬─────────────────┬─────────────────────────────────────────┬──────────┬────────────┬──────╮
+│    │ title           │ description                             │ color    │ archived   │   id │
+├────┼─────────────────┼─────────────────────────────────────────┼──────────┼────────────┼──────┤
+│  0 │ To be developed │ A todo list for developing this app.    │ cyan     │ False      │    1 │
+├────┼─────────────────┼─────────────────────────────────────────┼──────────┼────────────┼──────┤
+│  1 │ University      │                                         │ blueGrey │ False      │    2 │
+├────┼─────────────────┼─────────────────────────────────────────┼──────────┼────────────┼──────┤
+│  2 │ IDEAS           │ Task that is temporarily created untill │ black    │ False      │   37 │
+│    │                 │ the ideas feature is implemented        │          │            │      │
+│  3 │ My tasks        │                                         │ black    │ False      │   46 │
+├────┼─────────────────┼─────────────────────────────────────────┼──────────┼────────────┼──────┤
+│  4 │ string          │ string                                  │ string   │ False      │  106 │
+╰────┴─────────────────┴─────────────────────────────────────────┴──────────┴────────────┴──────╯
+
+╭────┬─────────────────┬─────────────────────────────────────────┬──────────┬────────────┬──────╮
+│    │ title           │ description                             │ color    │ archived   │   id │
+╰────┴─────────────────┴─────────────────────────────────────────┴──────────┴────────────┴──────╯
+╭────┬─────────────────┬─────────────────────────────────────────┬──────────┬────────────┬──────╮
+│  0 │ To be developed │ A todo list for developing this app.    │ cyan     │ False      │    1 │
+╰────┼────┬────────────┴─────────────────────────────────────────┴──────────┴────────────┴──────╯
+     │    ├────────────────────────────────┬──────┬───────────┬────────────┬──────────┬───────────╮
+     │    │ text                           │   id │   task_id │ archived   │ pinned   │ checked   │
+     │    ├────────────────────────────────┼──────┼───────────┼────────────┼──────────┼───────────┤
+     │  0 │ Do whatever it takes!          │   16 │         1 │ False      │ True     │ False     │
+     │  1 │ make task reorderable          │   20 │         1 │ False      │ False    │ False     │
+     │  2 │ make todos reorderable         │   21 │         1 │ False      │ False    │ False     │
+     │  3 │ Add an indicator to the closed │   24 │         1 │ False      │ False    │ False     │
+     │    │ task widget of how many todos  │      │           │            │          │           │
+     │    │ there are.                     │      │           │            │          │           │
+     │  4 │ Add contact new WhatsApp       │   27 │         1 │ False      │ False    │ False     │
+     │    │ numbers without saving them    │      │           │            │          │           │ 
+     │    │ feature                        │      │           │            │          │           │
+     │  5 │ Implement Ideas feature.       │   36 │         1 │ False      │ False    │ False     │
+     │  6 │ Implement Subscriptions        │   40 │         1 │ False      │ False    │ False     │
+     │    │ feature                        │      │           │            │          │           │
+     │  7 │ Implement a notification       │   41 │         1 │ False      │ False    │ False     │
+     │    │ system                         │      │           │            │          │           │
+     │  8 │ make todos groupable           │   42 │         1 │ False      │ False    │ False     │
+     │  9 │ fix todos UI when the keyboard │   43 │         1 │ False      │ False    │ False     │
+     │    │ is opened, the last todo is    │      │           │            │          │           │
+     │    │ underneath the keyboard        │      │           │            │          │           │
+     │ 10 │ fix set state in task page     │   56 │         1 │ False      │ False    │ False     │
+     │    │ when updating an archived task │      │           │            │          │           │
+     │    │ information                    │      │           │            │          │           │
+     │ 11 │ add pin to todos to appear on  │   81 │         1 │ False      │ False    │ False     │
+     │    │ the pinned section on home     │      │           │            │          │           │
+     │    │ screen                         │      │           │            │          │           │
+     │    ├────────────────────────────────┴──────┴───────────┴────────────┴──────────┴───────────╯
+╭────┼────┴────────────┬─────────────────────────────────────────┬──────────┬────────────┬──────╮
+│  1 │ University      │                                         │ blueGrey │ False      │    2 │
+├────┼─────────────────┼─────────────────────────────────────────┼──────────┼────────────┼──────┤
+│  2 │ IDEAS           │ Task that is temporarily created untill │ black    │ False      │   37 │
+│    │                 │ the ideas feature is implemented        │          │            │      │
+├────┼─────────────────┼─────────────────────────────────────────┼──────────┼────────────┼──────┤
+│  3 │ My tasks        │                                         │ black    │ False      │   46 │
+├────┼─────────────────┼─────────────────────────────────────────┼──────────┼────────────┼──────┤
+│  4 │ string          │ string                                  │ string   │ False      │  106 │
+╰────┴─────────────────┴─────────────────────────────────────────┴──────────┴────────────┴──────╯
