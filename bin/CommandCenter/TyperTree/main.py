@@ -4,7 +4,7 @@ from pydantic import BaseModel, validator
 from treelib import Tree
 from typer.core import TyperGroup
 from VarlaLib.Context import context
-from VarlaLib.Shell import Colorize, Foreground, Modifier
+from VarlaLib.Decorations import Colorize, Colors
 
 
 class TyperTree(BaseModel):
@@ -26,8 +26,8 @@ class TyperTree(BaseModel):
         v.create_node(
             Colorize(
                 text=ROOT,
-                style=Modifier.BOLD,
-                foreground=Foreground.PURPLE,
+                style=Colors.MD.BOLD,
+                foreground=Colors.FG.PURPLE,
             ),
             ROOT,
         )
@@ -36,9 +36,9 @@ class TyperTree(BaseModel):
         v.update_node(
             f"{ROOT}_shell",
             tag=Colorize(
-                text=f"shell { Colorize( text='[ Interactive Shell ]', style=Modifier.NOTHING,foreground=Foreground.DARK_GRAY )}",
-                style=Modifier.BOLD,
-                foreground=Foreground.PURPLE,
+                text=f"shell { Colorize( text='[ Interactive Shell ]', style=Colors.MD.NOTHING,foreground=Colors.FG.DARK_GRAY )}",
+                style=Colors.MD.BOLD,
+                foreground=Colors.FG.PURPLE,
             ),
         )
 
@@ -46,8 +46,8 @@ class TyperTree(BaseModel):
             v.create_node(
                 Colorize(
                     text=i.command.command,
-                    style=Modifier.BOLD,
-                    foreground=Foreground.YELLOW,
+                    style=Colors.MD.BOLD,
+                    foreground=Colors.FG.YELLOW,
                 ),
                 i.command.command,
                 parent=f"{ROOT}_shell",
@@ -77,10 +77,10 @@ class TyperTree(BaseModel):
                 tree.create_node(
                     Colorize(
                         text=i,
-                        style=Modifier.BOLD,
-                        foreground=Foreground.PURPLE
+                        style=Colors.MD.BOLD,
+                        foreground=Colors.FG.PURPLE
                         if commands[i].invoke_without_command
-                        else Foreground.GREEN,
+                        else Colors.FG.GREEN,
                     ),
                     name + "_" + i,
                     parent=name,
@@ -89,7 +89,7 @@ class TyperTree(BaseModel):
                 cls.get_ctx_tree(tree, commands[i].commands, name + "_" + i)
             else:
                 tree.create_node(
-                    Colorize(text=i, style=Modifier.BOLD, foreground=Foreground.YELLOW),
+                    Colorize(text=i, style=Colors.MD.BOLD, foreground=Colors.FG.YELLOW),
                     name + "_" + i,
                     parent=name,
                     data="leaf",
@@ -98,8 +98,8 @@ class TyperTree(BaseModel):
                     tree.create_node(
                         Colorize(
                             text=f"{' '.join(param.opts) if param.param_type_name == 'option' else param.name} [ {param.type} ] {'[ required ]' if param.required else ''}",
-                            foreground=Foreground.BLUE,
-                            style=Modifier.ITALIC,
+                            foreground=Colors.FG.BLUE,
+                            style=Colors.MD.ITALIC,
                         ),
                         f"{name}_{i}_param_{param.name}",
                         parent=f"{name}_{i}",

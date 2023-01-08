@@ -8,7 +8,8 @@ from Interfaces.Services import backup, tasks
 from typer import Context as TyperContext
 from typer import Typer
 from VarlaLib.Context import context
-from VarlaLib.Shell import VarlaCLI as Varla, header
+from VarlaLib.Shell import VarlaCLI as Varla
+from VarlaLib.Decorations import header
 
 app = Typer(add_completion=True)
 
