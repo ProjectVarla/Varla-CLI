@@ -13,6 +13,7 @@ fastapi = "*"
 tabulate = "*"
 keyboard = "*"
 treelib = "*"
+websocket-client = "*"
 
 [dev-packages]
 black = "*"
