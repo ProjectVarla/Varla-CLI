@@ -1,4 +1,5 @@
 import requests
+from Models.Cores import NotificationMessage
 from conf import settings
 from VarlaLib.Shell import VarlaCLI as Varla
 from websocket import create_connection
@@ -6,11 +7,15 @@ from websocket import create_connection
 
 class Notifications:
     @staticmethod
-    def push(channel_name: str, message: str):
-        response = requests.get(
-            f"{settings.GATEWAY_URL}/push/{channel_name}/{message}", timeout=3
-        )
-        return response.json()
+    def push(message: NotificationMessage):
+        try:
+            response = requests.get(
+                f"{settings.GATEWAY_URL}/push/{message.channel_name}/{message.message}",
+                timeout=3,
+            )
+            return response.json()
+        except Exception as e:
+            Varla.error(e)
 
     @staticmethod
     def bind(channel_name: str):
@@ -22,6 +27,10 @@ class Notifications:
             while True:
                 Varla.say(ws.recv(), name=channel_name)
 
-        except:
+        except KeyboardInterrupt:
             ws.close()
             Varla.clear()
+
+        except Exception as e:
+            Varla.clear()
+            Varla.error(e)
