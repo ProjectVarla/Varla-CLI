@@ -18,12 +18,13 @@ class Notifications:
             Varla.error(e)
 
     @staticmethod
-    def bind(channel_name: str):
-        Varla.clear(top_text="CHANNEL", bottom_text=channel_name)
+    def bind(channel_name: str, host: str = ""):
+
+        host = host if host else settings.NOTIFICATION_CORE_URL
+        Varla.clear(top_text=host.upper(), bottom_text=channel_name)
+
         try:
-            ws = create_connection(
-                f"ws://{settings.NOTIFICATION_CORE_URL}/bind/{channel_name}"
-            )
+            ws = create_connection(f"ws://{host}/bind/{channel_name}")
             while True:
                 Varla.say(ws.recv(), name=channel_name)
 

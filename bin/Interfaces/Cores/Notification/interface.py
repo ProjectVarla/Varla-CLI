@@ -14,5 +14,5 @@ def push(channel_name: str, message: str):
 
 
 @notification.command("bind")
-def bind(channel_name: str):
-    Notifications.bind(channel_name)
+def bind(channel_name: str, host: str = typer.Option(None, "--host", "-h")):
+    Notifications.bind(channel_name, host)
