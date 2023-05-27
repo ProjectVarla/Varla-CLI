@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     GATEWAY_URL: str
 
     NOTIFICATION_CORE_URL: Optional[str]
+    ORCHESTRATOR_URL: Optional[str]
     BACKUP_SERVICE_URL: Optional[str]
     TASKS_SERVICE_URL: Optional[str]
 
@@ -22,6 +23,10 @@ class Settings(BaseSettings):
 
     @validator("NOTIFICATION_CORE_URL", always=True)
     def notification_core_url_validator(cls, v, values):
+        return v if v else values["GATEWAY_URL"]
+
+    @validator("ORCHESTRATOR_URL", always=True)
+    def orchestrator_url_validator(cls, v, values):
         return v if v else values["GATEWAY_URL"]
 
     @validator("BACKUP_SERVICE_URL", always=True)
