@@ -20,7 +20,10 @@ tasks.add_typer(update, name="update")
 tasks.add_typer(retrieve, name="retrieve")
 
 
-@tasks.command("list", help="[Optional] Shows all Tasks in an interactive way.")
+@tasks.command(
+    "list",
+    help="[Optional] Shows all Tasks in an interactive way.",
+)
 @tasks.callback(invoke_without_command=True)
 def list_tasks(
     ctx: typer.Context,
@@ -60,8 +63,8 @@ def create_task(
 
 @create.command("todo")
 def create_todo(
-    task_id: int,
     text: str,
+    task_id: int,
     archived: bool = typer.Option(False, "--archived", "-a"),
     pinned: bool = typer.Option(False, "--pinned", "-p"),
 ):

@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import List, Optional
 
 from pydantic import BaseModel, validator
@@ -5,6 +6,7 @@ from treelib import Tree
 from typer.core import TyperGroup
 from VarlaLib.Context import context
 from VarlaLib.Decorations import Colorize, Colors
+from ..Registry import Command
 
 
 class TyperTree(BaseModel):
@@ -41,18 +43,22 @@ class TyperTree(BaseModel):
                 foreground=Colors.FG.PURPLE,
             ),
         )
-
-        for i in context.command_center_registry:
-            v.create_node(
-                Colorize(
-                    text=i.command.command,
-                    style=Colors.MD.BOLD,
-                    foreground=Colors.FG.YELLOW,
-                ),
-                i.command.command,
-                parent=f"{ROOT}_shell",
-                data="leaf",
-            )
+        cls.get_interactive_tree(
+            tree=v,
+            commands=context.command_center_registry.commands,
+            name=f"{ROOT}_shell",
+        )
+        # for i in context.command_center_registry.commands:
+        #     v.create_node(
+        #         Colorize(
+        #             text=i.command,
+        #             style=Colors.MD.BOLD,
+        #             foreground=Colors.FG.YELLOW,
+        #         ),
+        #         i.command,
+        #         parent=f"{ROOT}_shell",
+        #         data="leaf",
+        #     )
         return v
 
     @validator("dictionary", always=True)
@@ -105,6 +111,49 @@ class TyperTree(BaseModel):
                         parent=f"{name}_{i}",
                         data="param",
                     )
+
+    @classmethod
+    def get_interactive_tree(cls, tree: Tree, commands, name: str):
+        for command in commands:
+            if command.sub_commands:
+                tree.create_node(
+                    Colorize(
+                        text=command.command,
+                        style=Colors.MD.BOLD,
+                        foreground=Colors.FG.PURPLE
+                        if command.action
+                        else Colors.FG.GREEN,
+                    ),
+                    name + "_" + command.command,
+                    parent=name,
+                    data="leaf" if command.action else None,
+                )
+                # print("ho", command)
+                cls.get_interactive_tree(
+                    tree, command.sub_commands, name + "_" + command.command
+                )
+            else:
+                tree.create_node(
+                    Colorize(
+                        text=command.command,
+                        style=Colors.MD.BOLD,
+                        foreground=Colors.FG.YELLOW,
+                    ),
+                    name + "_" + command.command,
+                    parent=name,
+                    data="leaf",
+                )
+                # for param in command.params:
+                #     tree.create_node(
+                #         Colorize(
+                #             text=f"{' '.join(param.opts) if param.param_type_name == 'option' else param.name} [ {param.type} ] {'[ required ]' if param.required else ''}",
+                #             foreground=Colors.FG.BLUE,
+                #             style=Colors.MD.ITALIC,
+                #         ),
+                #         f"{name}_{i}_param_{param.name}",
+                #         parent=f"{name}_{i}",
+                #         data="param",
+                #     )
 
     def contains(self, cmd: List[str]):
         return self.tree.contains("varla_" + "_".join(cmd))

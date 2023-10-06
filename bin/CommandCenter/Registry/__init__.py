@@ -1,1 +1,0 @@
-from .Registry import CommandCenter

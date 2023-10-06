@@ -1,7 +1,8 @@
 #!/bin/python3
 
 
-from CommandCenter.Registry import CommandCenter
+from pprint import pprint
+from CommandCenter.v2.CommandCenter import CommandCenter
 from Interfaces.Cores import notification
 from Interfaces.Infrasturctures import orchestrator
 from Interfaces.Services import backup, tasks
@@ -24,8 +25,10 @@ def default(ctx: TyperContext) -> None:
     """Sub-command that I would like to be the default."""
 
     context.ctx_command = ctx.command
-    context.command_center_registry = CommandCenter.commands()
+    context.command_center_registry = CommandCenter.get_registry()
     context.get_command = CommandCenter.get_command
+    context.registry = CommandCenter.registry()
+
     if ctx.invoked_subcommand is not None and ctx.invoked_subcommand != "shell":
         return
 

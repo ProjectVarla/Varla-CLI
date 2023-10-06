@@ -1,2 +1,1 @@
-from .Registry import *
-from .TyperTree import *
+# from .TyperTree import *

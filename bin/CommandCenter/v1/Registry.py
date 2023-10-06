@@ -3,8 +3,10 @@ from pprint import pprint
 from typing import List
 
 from VarlaLib.Context import context
+from .NotificationCoreShellIntegration import NotificationIntegration
 
-from ..TyperTree import TyperTree
+
+from .TyperTree import TyperTree
 
 from VarlaLib.Shell import VarlaCLI as Varla
 from VarlaLib import Verbosity
@@ -63,14 +65,6 @@ class CommandCenter:
                 )
             ),
             # Registry(
-            #     command=Command(
-            #         command="tasks",
-            #         options=["-a"],
-            #         action=lambda: os.system("pipenv run python3 bin/Varla tasks"),
-            #     ),
-            #     subcommands=[],
-            # ),
-            # Registry(
             #     command=["quite"],
             #     action=lambda: set_verbosity(Verbosity.QUITE)
             # ),
@@ -116,7 +110,44 @@ class CommandCenter:
             ),
             Registry(
                 command=Command(
-                    command="flags", action=lambda: Varla.say(context.flags)
+                    command="flags",
+                    action=lambda: Varla.say(context.flags),
+                )
+            ),
+            Registry(
+                command=Command(
+                    command="switch",
+                    action=lambda: NotificationIntegration.connect(),
+                )
+            ),
+            Registry(
+                command=Command(
+                    command="stop",
+                    action=lambda: NotificationIntegration.stop(),
+                )
+            ),
+            Registry(
+                command=Command(
+                    command="id",
+                    action=lambda: NotificationIntegration.get_id(),
+                )
+            ),
+            Registry(
+                command=Command(
+                    command="sub",  # "subscribe",
+                    action=NotificationIntegration.subscribe,
+                )
+            ),
+            Registry(
+                command=Command(
+                    command="unsub",  # "unsubscribe",
+                    action=NotificationIntegration.unsubscribe,
+                )
+            ),
+            Registry(
+                command=Command(
+                    command="parse",  # "unsubscribe",
+                    action=NotificationIntegration.parse,
                 )
             ),
         ]
@@ -133,5 +164,6 @@ class CommandCenter:
                 command[0] == item.command.command
                 or command[0] == item.command.short_hand
             ):
+
                 return item
         return None
